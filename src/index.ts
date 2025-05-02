@@ -36,6 +36,7 @@ interface EndpointArgs {
   endpoint: string;
   body?: any;
   headers?: Record<string, string>;
+  host?: string;
 }
 
 interface ValidationResult {
@@ -132,6 +133,24 @@ const isValidEndpointArgs = (args: any): args is EndpointArgs => {
       `Your path will be resolved to: ${process.env.REST_BASE_URL}${args.endpoint.replace(/^\/+|\/+$/g, '')}. ` +
       `To test a different base URL, update the REST_BASE_URL environment variable.`
     );
+  }
+  // Validate .host if present
+  if (args.host !== undefined) {
+    try {
+      const url = new URL(args.host);
+      if (!/^https?:$/.test(url.protocol)) {
+        throw new Error();
+      }
+      // Remove trailing slash if present
+      if (url.pathname.endsWith('/') && url.pathname !== '/') {
+        url.pathname = url.pathname.replace(/\/+$/, '');
+        args.host = url.origin + url.pathname;
+      } else {
+        args.host = url.origin + url.pathname;
+      }
+    } catch (e) {
+      throw new McpError(ErrorCode.InvalidParams, `Invalid host format. The 'host' argument must be a valid URL starting with http:// or https://, e.g. "https://example.com" or "http://localhost:3001/api/v1". Received: "${args.host}"`);
+    }
   }
   
   return true;
@@ -353,10 +372,11 @@ class RestTester {
       // Ensure endpoint starts with / and remove any trailing slashes
       const normalizedEndpoint = `/${request.params.arguments.endpoint.replace(/^\/+|\/+$/g, '')}`;
       
+      const fullUrl = `${request.params.arguments.host || process.env.REST_BASE_URL}${normalizedEndpoint}`;
       // Initialize request config
       const config: AxiosRequestConfig = {
           method: request.params.arguments.method as Method,
-          url: normalizedEndpoint,
+          url: fullUrl,
           headers: {},
         };
 
@@ -398,7 +418,6 @@ class RestTester {
         const startTime = Date.now();
         const response = await this.axiosInstance.request(config);
         const endTime = Date.now();
-        const fullUrl = `${process.env.REST_BASE_URL}${normalizedEndpoint}`;
 
         // Determine auth method used
         let authMethod = 'none';

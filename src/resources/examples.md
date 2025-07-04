@@ -71,6 +71,17 @@ use_mcp_tool('rest-api', 'test_request', {
 });
 ```
 
+## PATCH Request Example
+```typescript
+use_mcp_tool('rest-api', 'test_request', {
+  "method": "PATCH",
+  "endpoint": "/users/123",
+  "body": {
+    "status": "active"
+  }
+});
+```
+
 ## Using the Optional `host` Argument
 You can override the default base URL for a single request by providing a `host` argument. This must be a valid URL starting with `http://` or `https://`, and may include a path (trailing slashes will be removed).
 

@@ -32,7 +32,7 @@ const AUTH_APIKEY_VALUE = process.env.AUTH_APIKEY_VALUE;
 const REST_ENABLE_SSL_VERIFY = process.env.REST_ENABLE_SSL_VERIFY !== 'false';
 
 interface EndpointArgs {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   endpoint: string;
   body?: any;
   headers?: Record<string, string>;
@@ -120,7 +120,7 @@ const normalizeBaseUrl = (url: string): string => url.replace(/\/+$/, '');
 
 const isValidEndpointArgs = (args: any): args is EndpointArgs => {
   if (typeof args !== 'object' || args === null) return false;
-  if (!['GET', 'POST', 'PUT', 'DELETE'].includes(args.method)) return false;
+  if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH'].includes(args.method)) return false;
   if (typeof args.endpoint !== 'string') return false;
   if (args.headers !== undefined && (typeof args.headers !== 'object' || args.headers === null)) return false;
   
@@ -329,7 +329,7 @@ class RestTester {
             properties: {
               method: {
                 type: 'string',
-                enum: ['GET', 'POST', 'PUT', 'DELETE'],
+                enum: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
                 description: 'HTTP method to use',
               },
               endpoint: {
@@ -380,8 +380,8 @@ class RestTester {
           headers: {},
         };
 
-      // Add request body for POST/PUT
-      if (['POST', 'PUT'].includes(request.params.arguments.method) && request.params.arguments.body) {
+      // Add request body for POST/PUT/PATCH
+      if (['POST', 'PUT', 'PATCH'].includes(request.params.arguments.method) && request.params.arguments.body) {
         config.data = request.params.arguments.body;
       }
 

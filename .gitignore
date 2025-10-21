@@ -3,3 +3,12 @@ build/
 src/version.ts
 .DS_Store
 *.log
+pnpm-lock.yaml
+
+# Test generated files
+test/uploads/
+test/fixtures/
+
+# AI
+.serena
+CLAUDE.md

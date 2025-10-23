@@ -1,11 +1,11 @@
 {
-  "name": "dkmaker-mcp-rest-api",
-  "version": "0.4.0",
-  "description": "A generic REST API tester for testing HTTP endpoints",
+  "name": "@qwang007/mcp-rest-api",
+  "version": "0.5.0",
+  "description": "A generic REST API tester for testing HTTP endpoints with file upload support. Enhanced fork of dkmaker-mcp-rest-api.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "dkmaker-mcp-rest-api": "./build/index.js"
+    "mcp-rest-api": "./build/index.js"
   },
   "files": [
     "build",
@@ -45,17 +45,22 @@
     "testing",
     "cline",
     "development",
-    "typescript"
+    "typescript",
+    "file-upload",
+    "multipart"
   ],
-  "author": "zenturacp",
+  "author": "qwang007",
+  "contributors": [
+    "zenturacp (original author)"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dkmaker/mcp-rest-api.git"
+    "url": "git+https://github.com/qwang07/mcp-rest-api.git"
   },
   "bugs": {
-    "url": "https://github.com/dkmaker/mcp-rest-api/issues"
+    "url": "https://github.com/qwang07/mcp-rest-api/issues"
   },
-  "homepage": "https://github.com/dkmaker/mcp-rest-api#readme",
+  "homepage": "https://github.com/qwang07/mcp-rest-api#readme",
   "engines": {
     "node": ">=18.0.0"
   }

@@ -9,6 +9,13 @@ pnpm-lock.yaml
 test/uploads/
 test/fixtures/
 
+# Secrets and tokens
+.npmrc
+.env
+.env.local
+*.token
+
 # AI
 .serena
 CLAUDE.md
+.mcp.json
